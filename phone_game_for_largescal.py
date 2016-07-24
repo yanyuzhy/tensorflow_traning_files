@@ -126,8 +126,10 @@ for t in range(Times):
         if flag_bingo == 1:
             #print solution, t
             num_str = zero * '0' + solution[0] * '1' + two * '2' + solution[1] * '3' + four * '4' + solution[2] * '5' + six * '6' + solution[3] * '7' + eight * '8' + solution[4] *  '9'
-            #print num_str
-            print 'Case #', t+1, ':', num_str
+            #print num_strs
+            #strHello = "the length of (%s) is %d" % ('Hello World', len('Hello World'))
+
+            print "Case #%d: %s" % (t+1, num_str)
 
             break
         i_layer = i_layer + 1
