@@ -19,9 +19,10 @@ for t in range(Times):
     Str = "ENRTENHOETEOOOWEN"
     Str = "RTEERTEVRHEEEHTSEEHNEIGHT"
     Str = f.readline()[:-1]
+    Str = 'ISXRESZNRTRNRRREOVIRNGGNIEHGHOREEVIVORRINUINEXUIHOHEERINEFEVVIIOIHFIFEWTSNNREOZNOHTEEEEZHEIIEWUXNOROOHZEOSFETSORTSIEXTVEEWOSNOROIEHNZVOTHEVTTSXVIWTHTEEHWOGOOEHINRFINNFTRNERFIEFUNREVHFOWEUEEENVORVFIOEXEUZVOTTRZENIIFGONIEVEEVUEVFRZISNIENZOWEOOOGZHEIHIRIRXEONEENOERUOIETUEEEFIFNGOOEEOOEISOUNENNXOSEREREFGEIEEEEWIOOXHWNNTTEINERENOEREVTRRHTEENOITOGOROTHETNVSENFVITFRXOTZSZNFHNIIFIEIXTEFGWGENEETVEWTSNIRTTFEEFNXISWGEOIESEEEROHFWFWTNENHNTTFITIOIZGEEISNUEWZIOVOEOSWOOEZENHVHEOOISSFEEIITGFTNORSERRFUFNTRTOIETTRFTHEEETEHHOEEUEFROTOZRZEEZIEEINEOEIXFETEVFEEOIEIHVEHSISETETZEUIEOIOFXOZOOVNEOEWHHOTEFSSIOHIESNIHFVITEEEENHOITEGSIOFFNFNENXUESTHREIOUZOEEGHRRRIRFFREGSTFNZFEENSOITNHISEROVGRGEEOVIEGTFTTNUNFEZOEOOHHNTOOESORGZHEZOOOFESVSUIRIONEEEEGISETTOEVVEETZNOTIEXEVESRXEIIRFEETRFNTNIREFENGEWTONOREVEHOEEEFOGORNZISNRZERIIOITRNIOHEEOEEFOTEORENTESUINNNIEFFNNNEEOEFEFENSONSTVTIEOVVNOFSOEOTUUEZSTFHTFEREHUNGVHTOHETERVHRHFEEETSENIIEIESXHNNEITITSNERUEIVEERVTWTEOOGFNENIEERTTRNNRGFIINOVEEENEITNENTTFIOSEZEXNRNHFSXEENWEUEFOHETIETSIIFNOEORTEVEONRHWOGRSOEEHNNONGNRNOESHZVIEOSSROEHRFGEOTEVETRFEHUIENRUXENTOTRIGEIZOREESIFTVSHRWOIXNVETIEIGEVNERWTESREOETHEFRNNRONNTSVRVIENEFRNEGWTWEFUVXRWXNVVESEUZGVEETEIWORXEGHVWEIHTNOSEZRIHERSNZVHIEEETENINEEHXWEIUTSUITVEEIEOUIOIHGENERZVINZNNEIXXNOTORIREVTVTNEREIOIENXGEINOZOVWRSTVFONEFOSSVREITEENORWNNSEVIEINUREOEUROROIESUFERFUOGIEEHZIOSERESEVTEIROSVFEEFEEOEFVWOEFEVOEVHETSINIIEFWNHZEUESNIFOUZXNREREXFEEZEVOHRRNITTWIEVVNWEEEUIVEXVRTVISOXVIRNIVOVERUEESVETOVINITGENEETTTENIENIXEVNZOVRRXNREHSVTEEEIVTRIHENERNTHRXIFFETIGHETOOIRWUONWGNREFHRTIHIINIRGENEOIONRFSVFEUNIFEEEOOZIIIHWNVEENIETEGZENSHEEEOVEWNEZISHXXGXTEEHOEEIHVTSWESSROUNSOEOENTUNFESOERZETSWERIIORIOINNNERFRVRIVSETERXEEINRNNINTSOOTFIUVEROSEORTOTWNHHNIONEEORENIWOEWWEENOIXEITNVNEGEEEEEXFEOHEEEETGITEVEXRRXVTTHHEHEEEEEHISHEEUFERRNNTOIXZNTEIEUNRUEEEENEREEEVNNEEEGNTESIRSIEFFIFTEOEWVOOOFWEGREEVEHNSZHXOHIONIHEIEUVOOTEOTEOIXZIEGEEENSEEIETUNTVVONNRRFNOOIISNXHEWIWISNEOTENNHIEFNSHHSEEHNNNESIXTHOTERRRROSEEOEUESEHWEENEXOESOTOEINGHEEISESEIFVITINRHNTEO'
     #count the symbols of the input string
     O = Str.count('O')
-    N = Str.count('E')
+    N = Str.count('N')
     E = Str.count('E')
     T = Str.count('T')
     W = Str.count('W')
@@ -70,6 +71,35 @@ for t in range(Times):
     H = H - eight
     T = T - eight
 
+    one = O
+    O = O - one
+    N = N - one
+    E = E -one
+
+    three = T
+    T = T - three
+    H = H - three
+    R = R - three
+    E = E - 2*three
+
+    five = F
+    F = F - five
+    I = I - five
+    V = V - five
+    E = E - five
+
+    seven = S
+    S = S - seven
+    E = E - 2*seven
+    V = V -seven
+    N = N -seven
+
+
+    nine = I
+    N = N - 2*nine
+    I = I - nine
+    E = E - nine
+
     #calculate the number in string
 
     #caculate the number max
@@ -101,15 +131,15 @@ for t in range(Times):
     min_num = lost_letters / 5
     max_num = lost_letters / 3
 
-    solution = [0,0,0,0,0]#define the solution
+    solution = [0,0,0,0,0,0]#define the solution the last num is the i_layer
     i_layer = 0
     q = Queue.Queue()#define the FIFO Queue
     q.put(solution)
     flag_bingo = 0
-    while False is q.empty() and i_layer < len(solution):
-        new_solution_node = q.get()
-        for j in range(max_num_list[i_layer]+1):
-            solution[i_layer] = j
+    while False is q.empty():
+        solution = q.get()
+        for j in range(max_num_list[solution[-1]]+1):
+            solution[solution[-1]] = j
             #check whether the new_solution_node is legal
             Str1 = solution[0] * ONE + solution[1] * THREE + solution[2] * FIVE + solution[3] * SEVEN + solution[4] * NINE + zero * ZERO + two * TWO + four * FOUR + six * SIX + eight * EIGHT
             Str1 = sorted(Str1)
@@ -122,7 +152,11 @@ for t in range(Times):
                     flag_mini = 0
                     break
             if flag_mini == 1:
-                q.put(solution)
+                child_solution = solution[:]
+                child_solution[-1] = child_solution[-1] + 1
+                if child_solution[-1] > 4:
+                    child_solution[-1] = 4
+                q.put(child_solution)
         if flag_bingo == 1:
             #print solution, t
             num_str = zero * '0' + solution[0] * '1' + two * '2' + solution[1] * '3' + four * '4' + solution[2] * '5' + six * '6' + solution[3] * '7' + eight * '8' + solution[4] *  '9'
@@ -132,7 +166,6 @@ for t in range(Times):
             print "Case #%d: %s" % (t+1, num_str)
 
             break
-        i_layer = i_layer + 1
 
 # first generate the child node for the first node in queue
 #  then put the new child note in the queue
